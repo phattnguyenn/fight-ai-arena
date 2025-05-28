@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,6 +18,10 @@ const MatchUpAndEvents = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [depositAmount, setDepositAmount] = useState("");
   const [paymentAmount, setPaymentAmount] = useState("");
+  const [selectedPartnerProfile, setSelectedPartnerProfile] = useState(null);
+  const [showDirectMessage, setShowDirectMessage] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
 
   const [sparringPartners] = useState([
     {
@@ -113,6 +116,11 @@ const MatchUpAndEvents = () => {
     }
   ]);
 
+  const handleViewProfile = (partner) => {
+    setSelectedPartnerProfile(partner);
+    setShowDirectMessage(false);
+  };
+
   const handleSendChallenge = (partner) => {
     setSelectedPartner(partner);
     setDepositAmount("50"); // Default ring rental fee
@@ -142,6 +150,34 @@ const MatchUpAndEvents = () => {
         setShowPaymentModal(false);
         setPaymentAmount("");
         setSelectedEvent(null);
+      }, 2000);
+    }
+  };
+
+  const handleSendMessage = () => {
+    if (newMessage.trim()) {
+      setMessages([
+        ...messages,
+        {
+          id: Date.now(),
+          text: newMessage,
+          sender: "me",
+          timestamp: new Date().toLocaleTimeString()
+        }
+      ]);
+      setNewMessage("");
+      
+      // Simulate partner response
+      setTimeout(() => {
+        setMessages(prev => [
+          ...prev,
+          {
+            id: Date.now() + 1,
+            text: "Thanks for reaching out! I'm interested in sparring. When works best for you?",
+            sender: "partner",
+            timestamp: new Date().toLocaleTimeString()
+          }
+        ]);
       }, 2000);
     }
   };
@@ -289,7 +325,11 @@ const MatchUpAndEvents = () => {
                           >
                             ⚡ Challenge
                           </Button>
-                          <Button variant="outline" className="border-orange-500/50 text-orange-400 hover:bg-orange-500/10 rounded-xl">
+                          <Button 
+                            onClick={() => handleViewProfile(partner)}
+                            variant="outline" 
+                            className="border-orange-500/50 text-orange-400 hover:bg-orange-500/10 rounded-xl"
+                          >
                             ◐ View Profile
                           </Button>
                         </div>
@@ -457,6 +497,142 @@ const MatchUpAndEvents = () => {
                 </Button>
               </div>
             </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {selectedPartnerProfile && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-2xl bg-gray-900 border-orange-500/30">
+            <CardContent className="p-6">
+              <div className="flex justify-between items-start mb-6">
+                <div className="flex items-center gap-4">
+                  <Avatar className="w-20 h-20 ring-2 ring-orange-500/50">
+                    <AvatarImage src={selectedPartnerProfile.avatar} />
+                    <AvatarFallback className="bg-gradient-to-br from-orange-600 to-red-600">
+                      {selectedPartnerProfile.displayName.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">{selectedPartnerProfile.displayName}</h2>
+                    <p className="text-gray-400">@{selectedPartnerProfile.username}</p>
+                    <div className="flex gap-2 mt-2">
+                      <Badge className="bg-gradient-to-r from-orange-600 to-red-600">
+                        {selectedPartnerProfile.rank}
+                      </Badge>
+                      {selectedPartnerProfile.martialArts.map((art) => (
+                        <Badge key={art} variant="outline" className="border-orange-500/50">
+                          {art}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => setSelectedPartnerProfile(null)}
+                  variant="ghost"
+                  className="text-gray-400 hover:text-white"
+                >
+                  ✕
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="text-center p-4 bg-gradient-to-br from-green-600/20 to-blue-600/20 rounded-xl border border-green-500/30">
+                  <div className="text-2xl font-bold text-green-400">{selectedPartnerProfile.wins}</div>
+                  <div className="text-gray-400">Wins</div>
+                </div>
+                <div className="text-center p-4 bg-gradient-to-br from-red-600/20 to-orange-600/20 rounded-xl border border-red-500/30">
+                  <div className="text-2xl font-bold text-red-400">{selectedPartnerProfile.losses}</div>
+                  <div className="text-gray-400">Losses</div>
+                </div>
+                <div className="text-center p-4 bg-gradient-to-br from-blue-600/20 to-orange-600/20 rounded-xl border border-blue-500/30">
+                  <div className="text-2xl font-bold text-blue-400">{selectedPartnerProfile.winRate}%</div>
+                  <div className="text-gray-400">Win Rate</div>
+                </div>
+              </div>
+
+              <p className="text-gray-300 mb-6">{selectedPartnerProfile.bio}</p>
+
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => setShowDirectMessage(true)}
+                  className="flex-1 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
+                >
+                  Send Message
+                </Button>
+                <Button
+                  onClick={() => handleSendChallenge(selectedPartnerProfile)}
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-orange-600 hover:from-blue-700 hover:to-orange-700"
+                >
+                  Challenge
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {showDirectMessage && selectedPartnerProfile && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-2xl h-[80vh] bg-gray-900 border-orange-500/30 flex flex-col">
+            <CardHeader className="border-b border-gray-800">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Avatar className="w-10 h-10">
+                    <AvatarImage src={selectedPartnerProfile.avatar} />
+                    <AvatarFallback>{selectedPartnerProfile.displayName.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <CardTitle className="text-white">{selectedPartnerProfile.displayName}</CardTitle>
+                    <p className="text-sm text-gray-400">@{selectedPartnerProfile.username}</p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => setShowDirectMessage(false)}
+                  variant="ghost"
+                  className="text-gray-400 hover:text-white"
+                >
+                  ✕
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.sender === "me" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-lg p-3 ${
+                      message.sender === "me"
+                        ? "bg-orange-600 text-white"
+                        : "bg-gray-700 text-gray-200"
+                    }`}
+                  >
+                    <p>{message.text}</p>
+                    <p className="text-xs opacity-70 mt-1">{message.timestamp}</p>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+            <div className="p-4 border-t border-gray-800">
+              <div className="flex gap-2">
+                <Input
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type your message..."
+                  className="bg-gray-800 border-gray-700 text-white"
+                  onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                />
+                <Button
+                  onClick={handleSendMessage}
+                  className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
+                >
+                  Send
+                </Button>
+              </div>
+            </div>
           </Card>
         </div>
       )}
