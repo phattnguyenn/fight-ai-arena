@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,18 +19,46 @@ const MainApp = () => {
     avatar: "",
     rank: "Bronze I",
     eloPoints: 1200,
-    posts: 0,
-    followers: 0,
-    following: 0
+    posts: 24,
+    followers: 156,
+    following: 89,
+    wins: 12,
+    losses: 3,
+    draws: 1,
+    totalFights: 16,
+    winRate: 75,
+    avgPerformance: 82
   });
 
   const [hasCompletedSetup, setHasCompletedSetup] = useState(false);
+
+  const handleLogout = () => {
+    setHasCompletedSetup(false);
+    setUserProfile({
+      username: "",
+      displayName: "",
+      bio: "",
+      martialArts: [],
+      avatar: "",
+      rank: "Bronze I",
+      eloPoints: 1200,
+      posts: 0,
+      followers: 0,
+      following: 0,
+      wins: 0,
+      losses: 0,
+      draws: 0,
+      totalFights: 0,
+      winRate: 0,
+      avgPerformance: 0
+    });
+  };
 
   if (!hasCompletedSetup) {
     return (
       <ProfileSetup 
         onComplete={(profile) => {
-          setUserProfile(profile);
+          setUserProfile({...profile, wins: 12, losses: 3, draws: 1, totalFights: 16, winRate: 75, avgPerformance: 82});
           setHasCompletedSetup(true);
         }} 
       />
@@ -44,7 +71,7 @@ const MainApp = () => {
       <header className="bg-gradient-to-r from-black via-orange-900/20 to-red-900/20 backdrop-blur-sm border-b border-orange-500/20 px-4 py-3 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <h1 className="text-xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 bg-clip-text text-transparent">
-            FIGHT<span className="text-white">CONNECT</span>
+            FIGHT<span className="text-white">CLUB</span>
           </h1>
           <div className="flex items-center space-x-3">
             <Avatar className="w-8 h-8 ring-2 ring-orange-500/50">
@@ -67,31 +94,31 @@ const MainApp = () => {
               value="home" 
               className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
             >
-              🏠
+              ▣
             </TabsTrigger>
             <TabsTrigger 
               value="create" 
               className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
             >
-              ➕
+              ＋
             </TabsTrigger>
             <TabsTrigger 
               value="analyze" 
               className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
             >
-              🎯
+              ●
             </TabsTrigger>
             <TabsTrigger 
               value="matchup" 
               className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
             >
-              ⚔️
+              ⚡
             </TabsTrigger>
             <TabsTrigger 
               value="profile" 
               className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
             >
-              👤
+              ◐
             </TabsTrigger>
           </TabsList>
 
@@ -112,7 +139,7 @@ const MainApp = () => {
           </TabsContent>
 
           <TabsContent value="profile">
-            <UserProfile profile={userProfile} />
+            <UserProfile profile={userProfile} onLogout={handleLogout} />
           </TabsContent>
         </Tabs>
       </div>
@@ -201,23 +228,31 @@ const AIAnalyze = () => {
   );
 };
 
-const UserProfile = ({ profile }) => {
+const UserProfile = ({ profile, onLogout }) => {
   return (
     <div className="space-y-6">
       <Card className="bg-black/50 backdrop-blur-sm border border-orange-500/20 rounded-3xl overflow-hidden">
         <CardContent className="p-8">
-          <div className="flex items-center space-x-6 mb-8">
-            <Avatar className="w-24 h-24 ring-4 ring-gradient-to-r from-orange-500 to-red-500">
-              <AvatarImage src={profile.avatar} />
-              <AvatarFallback className="bg-gradient-to-br from-orange-600 to-red-600 text-white text-3xl">
-                {profile.displayName.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <h2 className="text-3xl font-bold text-white mb-1">{profile.displayName}</h2>
-              <p className="text-gray-400 text-lg">@{profile.username}</p>
-              <Badge className="bg-gradient-to-r from-orange-600 to-red-600 text-white mt-3 px-4 py-1 text-sm">{profile.rank}</Badge>
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-6">
+              <Avatar className="w-24 h-24 ring-4 ring-gradient-to-r from-orange-500 to-red-500">
+                <AvatarImage src={profile.avatar} />
+                <AvatarFallback className="bg-gradient-to-br from-orange-600 to-red-600 text-white text-3xl">
+                  {profile.displayName.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <h2 className="text-3xl font-bold text-white mb-1">{profile.displayName}</h2>
+                <p className="text-gray-400 text-lg">@{profile.username}</p>
+                <Badge className="bg-gradient-to-r from-orange-600 to-red-600 text-white mt-3 px-4 py-1 text-sm">{profile.rank}</Badge>
+              </div>
             </div>
+            <Button 
+              onClick={onLogout}
+              className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl px-6"
+            >
+              ◗ Logout
+            </Button>
           </div>
 
           <p className="text-gray-300 mb-8 text-lg">{profile.bio}</p>
@@ -237,6 +272,29 @@ const UserProfile = ({ profile }) => {
             </div>
           </div>
 
+          {/* Fighting Stats */}
+          <div className="mb-8">
+            <h3 className="text-white font-semibold mb-4 text-xl">Fighting Stats</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-gradient-to-br from-green-600/20 to-blue-600/20 rounded-2xl p-4 text-center border border-green-500/30">
+                <div className="text-2xl font-bold text-green-400">{profile.wins}</div>
+                <div className="text-gray-300 text-sm">Wins</div>
+              </div>
+              <div className="bg-gradient-to-br from-red-600/20 to-orange-600/20 rounded-2xl p-4 text-center border border-red-500/30">
+                <div className="text-2xl font-bold text-red-400">{profile.losses}</div>
+                <div className="text-gray-300 text-sm">Losses</div>
+              </div>
+              <div className="bg-gradient-to-br from-gray-600/20 to-gray-500/20 rounded-2xl p-4 text-center border border-gray-500/30">
+                <div className="text-2xl font-bold text-gray-400">{profile.draws}</div>
+                <div className="text-gray-300 text-sm">Draws</div>
+              </div>
+              <div className="bg-gradient-to-br from-blue-600/20 to-orange-600/20 rounded-2xl p-4 text-center border border-blue-500/30">
+                <div className="text-2xl font-bold text-blue-400">{profile.winRate}%</div>
+                <div className="text-gray-300 text-sm">Win Rate</div>
+              </div>
+            </div>
+          </div>
+
           <div className="mb-6">
             <h3 className="text-white font-semibold mb-4 text-xl">Martial Arts</h3>
             <div className="flex flex-wrap gap-3">
@@ -250,8 +308,16 @@ const UserProfile = ({ profile }) => {
 
           <div className="bg-gradient-to-br from-orange-600/20 to-red-600/20 rounded-2xl p-6 border border-orange-500/30">
             <h3 className="text-white font-semibold mb-3 text-xl">ELO Rating</h3>
-            <div className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">{profile.eloPoints}</div>
-            <div className="text-gray-400 mt-2">Current Rank: {profile.rank}</div>
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">{profile.eloPoints}</div>
+                <div className="text-gray-400 mt-2">Current Rank: {profile.rank}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-white">{profile.avgPerformance}</div>
+                <div className="text-gray-400 text-sm">Avg Performance</div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
