@@ -1,16 +1,19 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import HomeFeed from "@/components/HomeFeed";
 import ProfileSetup from "@/components/ProfileSetup";
 import CreatePost from "@/components/CreatePost";
 import MatchUpAndEvents from "@/components/MatchUpAndEvents";
+import UserProfile from "@/components/UserProfile";
+import AIAnalyze from "@/components/AIAnalyze";
 
 const MainApp = () => {
   const [activeTab, setActiveTab] = useState("home");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [userProfile, setUserProfile] = useState({
     username: "",
     displayName: "",
@@ -27,7 +30,36 @@ const MainApp = () => {
     draws: 1,
     totalFights: 16,
     winRate: 75,
-    avgPerformance: 82
+    avgPerformance: 82,
+    matchHistory: [
+      {
+        id: 1,
+        opponent: "Jake Martinez",
+        result: "Win",
+        method: "TKO",
+        round: 3,
+        date: "2024-03-15",
+        event: "Fight Night 42"
+      },
+      {
+        id: 2,
+        opponent: "Alex Thompson",
+        result: "Loss",
+        method: "Decision",
+        round: 5,
+        date: "2024-02-20",
+        event: "Championship Series"
+      },
+      {
+        id: 3,
+        opponent: "Mike Chen",
+        result: "Win",
+        method: "Submission",
+        round: 2,
+        date: "2024-01-10",
+        event: "Underground Battle"
+      }
+    ]
   });
 
   const [hasCompletedSetup, setHasCompletedSetup] = useState(false);
@@ -50,7 +82,8 @@ const MainApp = () => {
       draws: 0,
       totalFights: 0,
       winRate: 0,
-      avgPerformance: 0
+      avgPerformance: 0,
+      matchHistory: []
     });
   };
 
@@ -58,269 +91,124 @@ const MainApp = () => {
     return (
       <ProfileSetup 
         onComplete={(profile) => {
-          setUserProfile({...profile, wins: 12, losses: 3, draws: 1, totalFights: 16, winRate: 75, avgPerformance: 82});
+          setUserProfile({
+            ...profile, 
+            wins: 12, 
+            losses: 3, 
+            draws: 1, 
+            totalFights: 16, 
+            winRate: 75, 
+            avgPerformance: 82,
+            matchHistory: [
+              {
+                id: 1,
+                opponent: "Jake Martinez",
+                result: "Win",
+                method: "TKO",
+                round: 3,
+                date: "2024-03-15",
+                event: "Fight Night 42"
+              },
+              {
+                id: 2,
+                opponent: "Alex Thompson",
+                result: "Loss",
+                method: "Decision",
+                round: 5,
+                date: "2024-02-20",
+                event: "Championship Series"
+              }
+            ]
+          });
           setHasCompletedSetup(true);
         }} 
       />
     );
   }
 
+  const menuItems = [
+    { id: "home", label: "Home", icon: "🏠" },
+    { id: "create", label: "Create", icon: "➕" },
+    { id: "analyze", label: "Analyze", icon: "📊" },
+    { id: "matchup", label: "Match Up", icon: "⚔️" },
+    { id: "profile", label: "Profile", icon: "👤" },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-black via-orange-900/20 to-red-900/20 backdrop-blur-sm border-b border-orange-500/20 px-4 py-3 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 bg-clip-text text-transparent">
-            FIGHT<span className="text-white">CLUB</span>
-          </h1>
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex">
+      {/* Vertical Sidebar */}
+      <div className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-gradient-to-b from-black via-orange-900/20 to-red-900/20 backdrop-blur-sm border-r border-orange-500/20 flex flex-col`}>
+        {/* Header */}
+        <div className="p-4 border-b border-orange-500/20">
+          <div className="flex items-center justify-between">
+            {sidebarOpen && (
+              <h1 className="text-xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 bg-clip-text text-transparent">
+                FIGHT<span className="text-white">CLUB</span>
+              </h1>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="text-white hover:bg-orange-500/20"
+            >
+              {sidebarOpen ? "◀" : "▶"}
+            </Button>
+          </div>
+        </div>
+
+        {/* User Info */}
+        <div className="p-4 border-b border-orange-500/20">
           <div className="flex items-center space-x-3">
-            <Avatar className="w-8 h-8 ring-2 ring-orange-500/50">
+            <Avatar className="w-10 h-10 ring-2 ring-orange-500/50">
               <AvatarImage src={userProfile.avatar} />
               <AvatarFallback className="bg-gradient-to-br from-orange-600 to-red-600 text-white">
                 {userProfile.displayName.charAt(0)}
               </AvatarFallback>
             </Avatar>
-            <span className="text-white font-medium">{userProfile.displayName}</span>
-            <Badge className="bg-gradient-to-r from-orange-600 to-red-600 text-white border-none">{userProfile.rank}</Badge>
+            {sidebarOpen && (
+              <div className="flex-1 min-w-0">
+                <p className="text-white font-medium truncate">{userProfile.displayName}</p>
+                <Badge className="bg-gradient-to-r from-orange-600 to-red-600 text-white border-none text-xs">
+                  {userProfile.rank}
+                </Badge>
+              </div>
+            )}
           </div>
         </div>
-      </header>
+
+        {/* Navigation Menu */}
+        <div className="flex-1 p-4">
+          <nav className="space-y-2">
+            {menuItems.map((item) => (
+              <Button
+                key={item.id}
+                variant="ghost"
+                onClick={() => setActiveTab(item.id)}
+                className={`w-full ${sidebarOpen ? 'justify-start' : 'justify-center'} ${
+                  activeTab === item.id
+                    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white'
+                    : 'text-gray-300 hover:bg-orange-500/20 hover:text-white'
+                } transition-all`}
+              >
+                <span className="text-lg">{item.icon}</span>
+                {sidebarOpen && <span className="ml-3">{item.label}</span>}
+              </Button>
+            ))}
+          </nav>
+        </div>
+      </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto p-4">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-5 bg-black/50 backdrop-blur-sm border border-orange-500/20 mb-6 rounded-2xl p-1">
-            <TabsTrigger 
-              value="home" 
-              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
-            >
-              ▣
-            </TabsTrigger>
-            <TabsTrigger 
-              value="create" 
-              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
-            >
-              ＋
-            </TabsTrigger>
-            <TabsTrigger 
-              value="analyze" 
-              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
-            >
-              ●
-            </TabsTrigger>
-            <TabsTrigger 
-              value="matchup" 
-              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
-            >
-              ⚡
-            </TabsTrigger>
-            <TabsTrigger 
-              value="profile" 
-              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
-            >
-              ◐
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="home">
-            <HomeFeed />
-          </TabsContent>
-
-          <TabsContent value="create">
-            <CreatePost />
-          </TabsContent>
-
-          <TabsContent value="analyze">
-            <AIAnalyze />
-          </TabsContent>
-
-          <TabsContent value="matchup">
-            <MatchUpAndEvents />
-          </TabsContent>
-
-          <TabsContent value="profile">
-            <UserProfile profile={userProfile} onLogout={handleLogout} />
-          </TabsContent>
-        </Tabs>
+      <div className="flex-1 overflow-hidden">
+        <div className="h-full overflow-y-auto p-6">
+          {activeTab === "home" && <HomeFeed />}
+          {activeTab === "create" && <CreatePost />}
+          {activeTab === "analyze" && <AIAnalyze />}
+          {activeTab === "matchup" && <MatchUpAndEvents />}
+          {activeTab === "profile" && <UserProfile profile={userProfile} onLogout={handleLogout} />}
+        </div>
       </div>
-    </div>
-  );
-};
-
-const AIAnalyze = () => {
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResults, setAnalysisResults] = useState(null);
-
-  const handleVideoUpload = () => {
-    setIsAnalyzing(true);
-    // Simulate AI analysis
-    setTimeout(() => {
-      setAnalysisResults({
-        explosiveness: 78,
-        guardQuality: 85,
-        overallScore: 81
-      });
-      setIsAnalyzing(false);
-    }, 3000);
-  };
-
-  return (
-    <Card className="bg-black/50 backdrop-blur-sm border border-orange-500/20 rounded-3xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-orange-500/10 to-red-500/10">
-        <CardTitle className="text-white flex items-center gap-2 text-xl">
-          🎯 AI Performance Analysis
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6 p-6">
-        <p className="text-gray-300">Upload a training or sparring video to get AI-powered insights on your performance.</p>
-        
-        {!isAnalyzing && !analysisResults && (
-          <div className="border-2 border-dashed border-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-12 text-center bg-gradient-to-br from-orange-500/5 to-red-500/5">
-            <div className="text-6xl mb-6 animate-bounce">🎥</div>
-            <p className="text-gray-400 mb-6 text-lg">Drop your video here or click to browse</p>
-            <Button 
-              onClick={handleVideoUpload} 
-              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-8 py-3 rounded-2xl text-lg font-semibold shadow-lg"
-            >
-              Upload Video
-            </Button>
-          </div>
-        )}
-
-        {isAnalyzing && (
-          <div className="text-center py-12">
-            <div className="animate-spin text-6xl mb-6">⚙️</div>
-            <p className="text-white text-xl mb-2">Analyzing your technique...</p>
-            <p className="text-gray-400">This may take a few moments</p>
-          </div>
-        )}
-
-        {analysisResults && (
-          <div className="space-y-6">
-            <h3 className="text-white font-semibold text-xl">Analysis Results</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-gradient-to-br from-orange-600/20 to-red-600/20 rounded-2xl p-6 text-center border border-orange-500/30">
-                <div className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">{analysisResults.explosiveness}</div>
-                <div className="text-white font-semibold mt-2">Explosiveness</div>
-                <div className="text-gray-400 text-sm">Power & Speed</div>
-              </div>
-              <div className="bg-gradient-to-br from-blue-600/20 to-orange-600/20 rounded-2xl p-6 text-center border border-blue-500/30">
-                <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-orange-400 bg-clip-text text-transparent">{analysisResults.guardQuality}</div>
-                <div className="text-white font-semibold mt-2">Guard Quality</div>
-                <div className="text-gray-400 text-sm">Defense</div>
-              </div>
-              <div className="bg-gradient-to-br from-red-600/20 to-blue-600/20 rounded-2xl p-6 text-center border border-red-500/30">
-                <div className="text-3xl font-bold bg-gradient-to-r from-red-400 to-blue-400 bg-clip-text text-transparent">{analysisResults.overallScore}</div>
-                <div className="text-white font-semibold mt-2">Overall Score</div>
-                <div className="text-gray-400 text-sm">Combined Rating</div>
-              </div>
-            </div>
-            <Button 
-              onClick={() => setAnalysisResults(null)} 
-              className="w-full bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 rounded-2xl py-3"
-            >
-              Analyze Another Video
-            </Button>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  );
-};
-
-const UserProfile = ({ profile, onLogout }) => {
-  return (
-    <div className="space-y-6">
-      <Card className="bg-black/50 backdrop-blur-sm border border-orange-500/20 rounded-3xl overflow-hidden">
-        <CardContent className="p-8">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center space-x-6">
-              <Avatar className="w-24 h-24 ring-4 ring-gradient-to-r from-orange-500 to-red-500">
-                <AvatarImage src={profile.avatar} />
-                <AvatarFallback className="bg-gradient-to-br from-orange-600 to-red-600 text-white text-3xl">
-                  {profile.displayName.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <h2 className="text-3xl font-bold text-white mb-1">{profile.displayName}</h2>
-                <p className="text-gray-400 text-lg">@{profile.username}</p>
-                <Badge className="bg-gradient-to-r from-orange-600 to-red-600 text-white mt-3 px-4 py-1 text-sm">{profile.rank}</Badge>
-              </div>
-            </div>
-            <Button 
-              onClick={onLogout}
-              className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl px-6"
-            >
-              ◗ Logout
-            </Button>
-          </div>
-
-          <p className="text-gray-300 mb-8 text-lg">{profile.bio}</p>
-
-          <div className="grid grid-cols-3 gap-6 mb-8">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white">{profile.posts}</div>
-              <div className="text-gray-400">Posts</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white">{profile.followers}</div>
-              <div className="text-gray-400">Followers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white">{profile.following}</div>
-              <div className="text-gray-400">Following</div>
-            </div>
-          </div>
-
-          {/* Fighting Stats */}
-          <div className="mb-8">
-            <h3 className="text-white font-semibold mb-4 text-xl">Fighting Stats</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-gradient-to-br from-green-600/20 to-blue-600/20 rounded-2xl p-4 text-center border border-green-500/30">
-                <div className="text-2xl font-bold text-green-400">{profile.wins}</div>
-                <div className="text-gray-300 text-sm">Wins</div>
-              </div>
-              <div className="bg-gradient-to-br from-red-600/20 to-orange-600/20 rounded-2xl p-4 text-center border border-red-500/30">
-                <div className="text-2xl font-bold text-red-400">{profile.losses}</div>
-                <div className="text-gray-300 text-sm">Losses</div>
-              </div>
-              <div className="bg-gradient-to-br from-gray-600/20 to-gray-500/20 rounded-2xl p-4 text-center border border-gray-500/30">
-                <div className="text-2xl font-bold text-gray-400">{profile.draws}</div>
-                <div className="text-gray-300 text-sm">Draws</div>
-              </div>
-              <div className="bg-gradient-to-br from-blue-600/20 to-orange-600/20 rounded-2xl p-4 text-center border border-blue-500/30">
-                <div className="text-2xl font-bold text-blue-400">{profile.winRate}%</div>
-                <div className="text-gray-300 text-sm">Win Rate</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-6">
-            <h3 className="text-white font-semibold mb-4 text-xl">Martial Arts</h3>
-            <div className="flex flex-wrap gap-3">
-              {profile.martialArts.map((art, index) => (
-                <Badge key={index} variant="outline" className="border-orange-500 text-orange-400 bg-orange-500/10 px-4 py-2 rounded-full">
-                  {art}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-orange-600/20 to-red-600/20 rounded-2xl p-6 border border-orange-500/30">
-            <h3 className="text-white font-semibold mb-3 text-xl">ELO Rating</h3>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">{profile.eloPoints}</div>
-                <div className="text-gray-400 mt-2">Current Rank: {profile.rank}</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-white">{profile.avgPerformance}</div>
-                <div className="text-gray-400 text-sm">Avg Performance</div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };

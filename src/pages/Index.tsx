@@ -28,40 +28,52 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-gray-800 border-gray-700">
-        <CardContent className="p-6">
-          <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold text-white mb-2">Join the Fight</h1>
-            <p className="text-gray-400">Connect with fighters worldwide</p>
-          </div>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('/lovable-uploads/9b04fadf-c2c3-46e1-865a-49524a73ae37.png')`,
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80"></div>
+      </div>
 
-          <Tabs value={authMode} onValueChange={(value) => setAuthMode(value as "login" | "signup")}>
-            <TabsList className="grid w-full grid-cols-2 bg-gray-700">
-              <TabsTrigger value="signup" className="text-white data-[state=active]:bg-orange-600">Sign Up</TabsTrigger>
-              <TabsTrigger value="login" className="text-white data-[state=active]:bg-orange-600">Login</TabsTrigger>
-            </TabsList>
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <Card className="w-full max-w-md bg-black/80 backdrop-blur-sm border border-orange-500/30">
+          <CardContent className="p-6">
+            <div className="text-center mb-6">
+              <h1 className="text-2xl font-bold text-white mb-2">Join the Fight</h1>
+              <p className="text-gray-400">Connect with fighters worldwide</p>
+            </div>
 
-            <TabsContent value="signup" className="space-y-4 mt-4">
-              <AuthForm mode="signup" onSubmit={handleAuth} />
-            </TabsContent>
+            <Tabs value={authMode} onValueChange={(value) => setAuthMode(value as "login" | "signup")}>
+              <TabsList className="grid w-full grid-cols-2 bg-gray-700">
+                <TabsTrigger value="signup" className="text-white data-[state=active]:bg-orange-600">Sign Up</TabsTrigger>
+                <TabsTrigger value="login" className="text-white data-[state=active]:bg-orange-600">Login</TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="login" className="space-y-4 mt-4">
-              <AuthForm mode="login" onSubmit={handleAuth} />
-            </TabsContent>
-          </Tabs>
+              <TabsContent value="signup" className="space-y-4 mt-4">
+                <AuthForm mode="signup" onSubmit={handleAuth} />
+              </TabsContent>
 
-          <div className="text-center mt-4">
-            <Button
-              variant="ghost"
-              onClick={() => setShowAuth(false)}
-              className="text-gray-400 hover:text-white"
-            >
-              ← Back to Welcome
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+              <TabsContent value="login" className="space-y-4 mt-4">
+                <AuthForm mode="login" onSubmit={handleAuth} />
+              </TabsContent>
+            </Tabs>
+
+            <div className="text-center mt-4">
+              <Button
+                variant="ghost"
+                onClick={() => setShowAuth(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                ← Back to Welcome
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
