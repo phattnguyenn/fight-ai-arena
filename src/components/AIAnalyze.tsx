@@ -3,7 +3,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const AIAnalyze = () => {
+interface AIAnalyzeProps {
+  onEloIncrease: (points: number) => void;
+  userElo: number;
+}
+
+const AIAnalyze = ({ onEloIncrease, userElo }: AIAnalyzeProps) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResults, setAnalysisResults] = useState(null);
 
@@ -11,11 +16,15 @@ const AIAnalyze = () => {
     setIsAnalyzing(true);
     // Simulate AI analysis
     setTimeout(() => {
-      setAnalysisResults({
-        explosiveness: 78,
-        guardQuality: 85,
-        overallScore: 81
-      });
+      const eloGain = Math.floor(Math.random() * 50) + 25; // Random ELO gain between 25-75
+      const results = {
+        explosiveness: Math.floor(Math.random() * 30) + 70,
+        guardQuality: Math.floor(Math.random() * 30) + 70,
+        overallScore: Math.floor(Math.random() * 30) + 70,
+        eloGain: eloGain
+      };
+      setAnalysisResults(results);
+      onEloIncrease(eloGain);
       setIsAnalyzing(false);
     }, 3000);
   };
@@ -24,11 +33,12 @@ const AIAnalyze = () => {
     <Card className="bg-black/50 backdrop-blur-sm border border-orange-500/20 rounded-3xl overflow-hidden">
       <CardHeader className="bg-gradient-to-r from-orange-500/10 to-red-500/10">
         <CardTitle className="text-white flex items-center gap-2 text-xl">
-          📊 AI Performance Analysis
+          AI Performance Analysis
         </CardTitle>
+        <p className="text-gray-300 text-sm">Current ELO: {userElo} points</p>
       </CardHeader>
       <CardContent className="space-y-6 p-6">
-        <p className="text-gray-300">Upload a training or sparring video to get AI-powered insights on your performance.</p>
+        <p className="text-gray-300">Upload a training or sparring video to get AI-powered insights on your performance and earn ELO points.</p>
         
         {!isAnalyzing && !analysisResults && (
           <div className="border-2 border-dashed border-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-12 text-center bg-gradient-to-br from-orange-500/5 to-red-500/5">
@@ -54,6 +64,15 @@ const AIAnalyze = () => {
         {analysisResults && (
           <div className="space-y-6">
             <h3 className="text-white font-semibold text-xl">Analysis Results</h3>
+            
+            {/* ELO Gain Notification */}
+            <div className="bg-gradient-to-br from-green-600/20 to-blue-600/20 rounded-2xl p-6 text-center border border-green-500/30">
+              <div className="text-4xl mb-2">🏆</div>
+              <div className="text-2xl font-bold text-green-400">+{analysisResults.eloGain} ELO Points!</div>
+              <div className="text-white font-semibold mt-2">Great performance!</div>
+              <div className="text-gray-400 text-sm">New ELO: {userElo} points</div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-gradient-to-br from-orange-600/20 to-red-600/20 rounded-2xl p-6 text-center border border-orange-500/30">
                 <div className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">{analysisResults.explosiveness}</div>
@@ -71,6 +90,7 @@ const AIAnalyze = () => {
                 <div className="text-gray-400 text-sm">Combined Rating</div>
               </div>
             </div>
+            
             <Button 
               onClick={() => setAnalysisResults(null)} 
               className="w-full bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 rounded-2xl py-3"

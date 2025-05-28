@@ -10,6 +10,7 @@ import CreatePost from "@/components/CreatePost";
 import MatchUpAndEvents from "@/components/MatchUpAndEvents";
 import UserProfile from "@/components/UserProfile";
 import AIAnalyze from "@/components/AIAnalyze";
+import Notifications from "@/components/Notifications";
 
 const MainApp = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -25,12 +26,22 @@ const MainApp = () => {
     posts: 24,
     followers: 156,
     following: 89,
+    subscribers: 100,
+    isCreator: true,
     wins: 12,
     losses: 3,
     draws: 1,
     totalFights: 16,
     winRate: 75,
     avgPerformance: 82,
+    profileImages: [
+      "/lovable-uploads/70f89bc1-fad9-4a7c-9373-6275256cd8b8.png",
+      "/lovable-uploads/449a86e6-a6a3-4ead-aa65-72378005773c.png",
+      "/lovable-uploads/f0ea7ce1-8701-4f54-be86-df087cb69b67.png",
+      "/lovable-uploads/c96b90b9-9167-42be-965e-b40348944f1c.png",
+      "/lovable-uploads/ae9b405c-35e9-4c78-b66e-48359e3748d7.png",
+      "/lovable-uploads/617d9ba0-8592-426a-b3e5-2958df7d67b0.png"
+    ],
     matchHistory: [
       {
         id: 1,
@@ -77,14 +88,24 @@ const MainApp = () => {
       posts: 0,
       followers: 0,
       following: 0,
+      subscribers: 0,
+      isCreator: false,
       wins: 0,
       losses: 0,
       draws: 0,
       totalFights: 0,
       winRate: 0,
       avgPerformance: 0,
+      profileImages: [],
       matchHistory: []
     });
+  };
+
+  const handleEloIncrease = (points: number) => {
+    setUserProfile(prev => ({
+      ...prev,
+      eloPoints: prev.eloPoints + points
+    }));
   };
 
   if (!hasCompletedSetup) {
@@ -99,6 +120,16 @@ const MainApp = () => {
             totalFights: 16, 
             winRate: 75, 
             avgPerformance: 82,
+            subscribers: 100,
+            isCreator: true,
+            profileImages: [
+              "/lovable-uploads/70f89bc1-fad9-4a7c-9373-6275256cd8b8.png",
+              "/lovable-uploads/449a86e6-a6a3-4ead-aa65-72378005773c.png",
+              "/lovable-uploads/f0ea7ce1-8701-4f54-be86-df087cb69b67.png",
+              "/lovable-uploads/c96b90b9-9167-42be-965e-b40348944f1c.png",
+              "/lovable-uploads/ae9b405c-35e9-4c78-b66e-48359e3748d7.png",
+              "/lovable-uploads/617d9ba0-8592-426a-b3e5-2958df7d67b0.png"
+            ],
             matchHistory: [
               {
                 id: 1,
@@ -127,17 +158,18 @@ const MainApp = () => {
   }
 
   const menuItems = [
-    { id: "home", label: "Home", icon: "🏠" },
-    { id: "create", label: "Create", icon: "➕" },
-    { id: "analyze", label: "Analyze", icon: "📊" },
-    { id: "matchup", label: "Match Up", icon: "⚔️" },
-    { id: "profile", label: "Profile", icon: "👤" },
+    { id: "home", label: "Home" },
+    { id: "create", label: "Create" },
+    { id: "analyze", label: "Analyze" },
+    { id: "matchup", label: "Match Up" },
+    { id: "notifications", label: "Notifications" },
+    { id: "profile", label: "Profile" },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex">
-      {/* Vertical Sidebar */}
-      <div className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-gradient-to-b from-black via-orange-900/20 to-red-900/20 backdrop-blur-sm border-r border-orange-500/20 flex flex-col`}>
+      {/* Fixed Vertical Sidebar */}
+      <div className={`fixed top-0 left-0 h-full z-50 ${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-gradient-to-b from-black via-orange-900/20 to-red-900/20 backdrop-blur-sm border-r border-orange-500/20 flex flex-col`}>
         {/* Header */}
         <div className="p-4 border-b border-orange-500/20">
           <div className="flex items-center justify-between">
@@ -191,7 +223,6 @@ const MainApp = () => {
                     : 'text-gray-300 hover:bg-orange-500/20 hover:text-white'
                 } transition-all`}
               >
-                <span className="text-lg">{item.icon}</span>
                 {sidebarOpen && <span className="ml-3">{item.label}</span>}
               </Button>
             ))}
@@ -199,13 +230,14 @@ const MainApp = () => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-hidden">
+      {/* Main Content with margin for sidebar */}
+      <div className={`flex-1 ${sidebarOpen ? 'ml-64' : 'ml-16'} transition-all duration-300`}>
         <div className="h-full overflow-y-auto p-6">
           {activeTab === "home" && <HomeFeed />}
           {activeTab === "create" && <CreatePost />}
-          {activeTab === "analyze" && <AIAnalyze />}
+          {activeTab === "analyze" && <AIAnalyze onEloIncrease={handleEloIncrease} userElo={userProfile.eloPoints} />}
           {activeTab === "matchup" && <MatchUpAndEvents />}
+          {activeTab === "notifications" && <Notifications />}
           {activeTab === "profile" && <UserProfile profile={userProfile} onLogout={handleLogout} />}
         </div>
       </div>
