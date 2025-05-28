@@ -123,7 +123,7 @@ const ProfileSetup = ({ onComplete }: ProfileSetupProps) => {
                     <Checkbox
                       id={art}
                       checked={profile.martialArts.includes(art)}
-                      onCheckedChange={(checked) => handleMartialArtChange(art, checked)}
+                      onCheckedChange={(checked) => handleMartialArtChange(art, checked === true)}
                       className="border-gray-600"
                     />
                     <Label htmlFor={art} className="text-white text-sm">{art}</Label>
