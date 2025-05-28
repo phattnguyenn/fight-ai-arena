@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import HomeFeed from "@/components/HomeFeed";
 import ProfileSetup from "@/components/ProfileSetup";
 import CreatePost from "@/components/CreatePost";
-import FindSparringPartners from "@/components/FindSparringPartners";
+import MatchUpAndEvents from "@/components/MatchUpAndEvents";
 
 const MainApp = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -39,22 +39,22 @@ const MainApp = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700 px-4 py-3">
+      <header className="bg-gradient-to-r from-black via-orange-900/20 to-red-900/20 backdrop-blur-sm border-b border-orange-500/20 px-4 py-3 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl font-bold text-white">
-            FIGHT<span className="text-orange-500">CONNECT</span>
+          <h1 className="text-xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 bg-clip-text text-transparent">
+            FIGHT<span className="text-white">CONNECT</span>
           </h1>
           <div className="flex items-center space-x-3">
-            <Avatar className="w-8 h-8">
+            <Avatar className="w-8 h-8 ring-2 ring-orange-500/50">
               <AvatarImage src={userProfile.avatar} />
-              <AvatarFallback className="bg-orange-600 text-white">
+              <AvatarFallback className="bg-gradient-to-br from-orange-600 to-red-600 text-white">
                 {userProfile.displayName.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <span className="text-white font-medium">{userProfile.displayName}</span>
-            <Badge className="bg-orange-600 text-white">{userProfile.rank}</Badge>
+            <Badge className="bg-gradient-to-r from-orange-600 to-red-600 text-white border-none">{userProfile.rank}</Badge>
           </div>
         </div>
       </header>
@@ -62,21 +62,36 @@ const MainApp = () => {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto p-4">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-5 bg-gray-800 mb-6">
-            <TabsTrigger value="home" className="text-white data-[state=active]:bg-orange-600">
-              🏠 Home
+          <TabsList className="grid w-full grid-cols-5 bg-black/50 backdrop-blur-sm border border-orange-500/20 mb-6 rounded-2xl p-1">
+            <TabsTrigger 
+              value="home" 
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
+            >
+              🏠
             </TabsTrigger>
-            <TabsTrigger value="create" className="text-white data-[state=active]:bg-orange-600">
-              ➕ Post
+            <TabsTrigger 
+              value="create" 
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
+            >
+              ➕
             </TabsTrigger>
-            <TabsTrigger value="analyze" className="text-white data-[state=active]:bg-orange-600">
-              🤖 AI Analyze
+            <TabsTrigger 
+              value="analyze" 
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
+            >
+              🎯
             </TabsTrigger>
-            <TabsTrigger value="sparring" className="text-white data-[state=active]:bg-orange-600">
-              ⚔️ Sparring
+            <TabsTrigger 
+              value="matchup" 
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
+            >
+              ⚔️
             </TabsTrigger>
-            <TabsTrigger value="profile" className="text-white data-[state=active]:bg-orange-600">
-              👤 Profile
+            <TabsTrigger 
+              value="profile" 
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white rounded-xl transition-all"
+            >
+              👤
             </TabsTrigger>
           </TabsList>
 
@@ -92,8 +107,8 @@ const MainApp = () => {
             <AIAnalyze />
           </TabsContent>
 
-          <TabsContent value="sparring">
-            <FindSparringPartners />
+          <TabsContent value="matchup">
+            <MatchUpAndEvents />
           </TabsContent>
 
           <TabsContent value="profile">
@@ -123,56 +138,59 @@ const AIAnalyze = () => {
   };
 
   return (
-    <Card className="bg-gray-800 border-gray-700">
-      <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
-          🤖 AI Performance Analysis
+    <Card className="bg-black/50 backdrop-blur-sm border border-orange-500/20 rounded-3xl overflow-hidden">
+      <CardHeader className="bg-gradient-to-r from-orange-500/10 to-red-500/10">
+        <CardTitle className="text-white flex items-center gap-2 text-xl">
+          🎯 AI Performance Analysis
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6 p-6">
         <p className="text-gray-300">Upload a training or sparring video to get AI-powered insights on your performance.</p>
         
         {!isAnalyzing && !analysisResults && (
-          <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center">
-            <div className="text-gray-400 mb-4">📹</div>
-            <p className="text-gray-400 mb-4">Drop your video here or click to browse</p>
-            <Button onClick={handleVideoUpload} className="bg-orange-600 hover:bg-orange-700">
+          <div className="border-2 border-dashed border-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-12 text-center bg-gradient-to-br from-orange-500/5 to-red-500/5">
+            <div className="text-6xl mb-6 animate-bounce">🎥</div>
+            <p className="text-gray-400 mb-6 text-lg">Drop your video here or click to browse</p>
+            <Button 
+              onClick={handleVideoUpload} 
+              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-8 py-3 rounded-2xl text-lg font-semibold shadow-lg"
+            >
               Upload Video
             </Button>
           </div>
         )}
 
         {isAnalyzing && (
-          <div className="text-center py-8">
-            <div className="animate-spin text-4xl mb-4">⚙️</div>
-            <p className="text-white">Analyzing your technique...</p>
-            <p className="text-gray-400 text-sm">This may take a few moments</p>
+          <div className="text-center py-12">
+            <div className="animate-spin text-6xl mb-6">⚙️</div>
+            <p className="text-white text-xl mb-2">Analyzing your technique...</p>
+            <p className="text-gray-400">This may take a few moments</p>
           </div>
         )}
 
         {analysisResults && (
-          <div className="space-y-4">
-            <h3 className="text-white font-semibold">Analysis Results</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-gray-700 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-orange-500">{analysisResults.explosiveness}</div>
-                <div className="text-white">Explosiveness</div>
+          <div className="space-y-6">
+            <h3 className="text-white font-semibold text-xl">Analysis Results</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-br from-orange-600/20 to-red-600/20 rounded-2xl p-6 text-center border border-orange-500/30">
+                <div className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">{analysisResults.explosiveness}</div>
+                <div className="text-white font-semibold mt-2">Explosiveness</div>
                 <div className="text-gray-400 text-sm">Power & Speed</div>
               </div>
-              <div className="bg-gray-700 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-orange-500">{analysisResults.guardQuality}</div>
-                <div className="text-white">Guard Quality</div>
+              <div className="bg-gradient-to-br from-blue-600/20 to-orange-600/20 rounded-2xl p-6 text-center border border-blue-500/30">
+                <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-orange-400 bg-clip-text text-transparent">{analysisResults.guardQuality}</div>
+                <div className="text-white font-semibold mt-2">Guard Quality</div>
                 <div className="text-gray-400 text-sm">Defense</div>
               </div>
-              <div className="bg-gray-700 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-orange-500">{analysisResults.overallScore}</div>
-                <div className="text-white">Overall Score</div>
+              <div className="bg-gradient-to-br from-red-600/20 to-blue-600/20 rounded-2xl p-6 text-center border border-red-500/30">
+                <div className="text-3xl font-bold bg-gradient-to-r from-red-400 to-blue-400 bg-clip-text text-transparent">{analysisResults.overallScore}</div>
+                <div className="text-white font-semibold mt-2">Overall Score</div>
                 <div className="text-gray-400 text-sm">Combined Rating</div>
               </div>
             </div>
             <Button 
               onClick={() => setAnalysisResults(null)} 
-              className="w-full bg-gray-700 hover:bg-gray-600"
+              className="w-full bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 rounded-2xl py-3"
             >
               Analyze Another Video
             </Button>
@@ -186,54 +204,54 @@ const AIAnalyze = () => {
 const UserProfile = ({ profile }) => {
   return (
     <div className="space-y-6">
-      <Card className="bg-gray-800 border-gray-700">
-        <CardContent className="p-6">
-          <div className="flex items-center space-x-4 mb-6">
-            <Avatar className="w-20 h-20">
+      <Card className="bg-black/50 backdrop-blur-sm border border-orange-500/20 rounded-3xl overflow-hidden">
+        <CardContent className="p-8">
+          <div className="flex items-center space-x-6 mb-8">
+            <Avatar className="w-24 h-24 ring-4 ring-gradient-to-r from-orange-500 to-red-500">
               <AvatarImage src={profile.avatar} />
-              <AvatarFallback className="bg-orange-600 text-white text-2xl">
+              <AvatarFallback className="bg-gradient-to-br from-orange-600 to-red-600 text-white text-3xl">
                 {profile.displayName.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-white">{profile.displayName}</h2>
-              <p className="text-gray-400">@{profile.username}</p>
-              <Badge className="bg-orange-600 text-white mt-2">{profile.rank}</Badge>
+              <h2 className="text-3xl font-bold text-white mb-1">{profile.displayName}</h2>
+              <p className="text-gray-400 text-lg">@{profile.username}</p>
+              <Badge className="bg-gradient-to-r from-orange-600 to-red-600 text-white mt-3 px-4 py-1 text-sm">{profile.rank}</Badge>
             </div>
           </div>
 
-          <p className="text-gray-300 mb-6">{profile.bio}</p>
+          <p className="text-gray-300 mb-8 text-lg">{profile.bio}</p>
 
-          <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-3 gap-6 mb-8">
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">{profile.posts}</div>
+              <div className="text-3xl font-bold text-white">{profile.posts}</div>
               <div className="text-gray-400">Posts</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">{profile.followers}</div>
+              <div className="text-3xl font-bold text-white">{profile.followers}</div>
               <div className="text-gray-400">Followers</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">{profile.following}</div>
+              <div className="text-3xl font-bold text-white">{profile.following}</div>
               <div className="text-gray-400">Following</div>
             </div>
           </div>
 
-          <div className="mb-4">
-            <h3 className="text-white font-semibold mb-2">Martial Arts</h3>
-            <div className="flex flex-wrap gap-2">
+          <div className="mb-6">
+            <h3 className="text-white font-semibold mb-4 text-xl">Martial Arts</h3>
+            <div className="flex flex-wrap gap-3">
               {profile.martialArts.map((art, index) => (
-                <Badge key={index} variant="outline" className="border-orange-500 text-orange-500">
+                <Badge key={index} variant="outline" className="border-orange-500 text-orange-400 bg-orange-500/10 px-4 py-2 rounded-full">
                   {art}
                 </Badge>
               ))}
             </div>
           </div>
 
-          <div className="bg-gray-700 rounded-lg p-4">
-            <h3 className="text-white font-semibold mb-2">ELO Rating</h3>
-            <div className="text-3xl font-bold text-orange-500">{profile.eloPoints}</div>
-            <div className="text-gray-400">Current Rank: {profile.rank}</div>
+          <div className="bg-gradient-to-br from-orange-600/20 to-red-600/20 rounded-2xl p-6 border border-orange-500/30">
+            <h3 className="text-white font-semibold mb-3 text-xl">ELO Rating</h3>
+            <div className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">{profile.eloPoints}</div>
+            <div className="text-gray-400 mt-2">Current Rank: {profile.rank}</div>
           </div>
         </CardContent>
       </Card>
