@@ -1,11 +1,29 @@
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
 
 interface WelcomeScreenProps {
   onGetStarted: () => void;
 }
 
 const WelcomeScreen = ({ onGetStarted }: WelcomeScreenProps) => {
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+
+  const handleFeatureClick = () => {
+    toast({
+      title: "Sign Up Required",
+      description: "Please create an account to access this feature",
+      action: (
+        <Button 
+          onClick={onGetStarted}
+          className="bg-orange-600 hover:bg-orange-700 text-white"
+        >
+          Sign Up Now
+        </Button>
+      ),
+    });
+  };
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Background Image */}
@@ -42,19 +60,28 @@ const WelcomeScreen = ({ onGetStarted }: WelcomeScreenProps) => {
 
           {/* Features Grid */}
           <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
-            <div className="bg-black/60 backdrop-blur-sm border border-orange-500/30 rounded-lg p-6 hover:bg-black/70 transition-all">
+            <div 
+              onClick={handleFeatureClick}
+              className="bg-black/60 backdrop-blur-sm border border-orange-500/30 rounded-lg p-6 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
+            >
               <div className="text-orange-500 text-4xl mb-4">🥊</div>
               <h3 className="text-xl font-semibold text-white mb-2">AI Analysis</h3>
               <p className="text-gray-400">Get AI-powered insights on your technique, power, and defense</p>
             </div>
             
-            <div className="bg-black/60 backdrop-blur-sm border border-red-500/30 rounded-lg p-6 hover:bg-black/70 transition-all">
+            <div 
+              onClick={handleFeatureClick}
+              className="bg-black/60 backdrop-blur-sm border border-red-500/30 rounded-lg p-6 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
+            >
               <div className="text-red-500 text-4xl mb-4">⚔️</div>
               <h3 className="text-xl font-semibold text-white mb-2">Find Sparring Partners</h3>
               <p className="text-gray-400">Connect with fighters nearby for training and sparring sessions</p>
             </div>
             
-            <div className="bg-black/60 backdrop-blur-sm border border-blue-500/30 rounded-lg p-6 hover:bg-black/70 transition-all">
+            <div 
+              onClick={handleFeatureClick}
+              className="bg-black/60 backdrop-blur-sm border border-blue-500/30 rounded-lg p-6 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
+            >
               <div className="text-blue-500 text-4xl mb-4">🏆</div>
               <h3 className="text-xl font-semibold text-white mb-2">ELO Ranking</h3>
               <p className="text-gray-400">Track your progress with our skill-based ranking system</p>
@@ -71,14 +98,6 @@ const WelcomeScreen = ({ onGetStarted }: WelcomeScreenProps) => {
             </Button>
             <p className="text-gray-400 text-sm">Join thousands of martial artists worldwide</p>
           </div>
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute bottom-10 left-10 opacity-20">
-          <div className="text-orange-500 text-6xl animate-bounce">🔥</div>
-        </div>
-        <div className="absolute top-20 right-10 opacity-20">
-          <div className="text-red-500 text-4xl animate-pulse">💪</div>
         </div>
       </div>
     </div>
