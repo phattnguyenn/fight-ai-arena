@@ -1,13 +1,129 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import WelcomeScreen from "@/components/WelcomeScreen";
+import MainApp from "@/components/MainApp";
 
 const Index = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "signup">("signup");
+
+  const handleAuth = (email: string, password: string) => {
+    // Simulate authentication
+    console.log("Authenticating user:", email);
+    setIsAuthenticated(true);
+  };
+
+  if (isAuthenticated) {
+    return <MainApp />;
+  }
+
+  if (!showAuth) {
+    return <WelcomeScreen onGetStarted={() => setShowAuth(true)} />;
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-gray-800 border-gray-700">
+        <CardContent className="p-6">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-bold text-white mb-2">Join the Fight</h1>
+            <p className="text-gray-400">Connect with fighters worldwide</p>
+          </div>
+
+          <Tabs value={authMode} onValueChange={(value) => setAuthMode(value as "login" | "signup")}>
+            <TabsList className="grid w-full grid-cols-2 bg-gray-700">
+              <TabsTrigger value="signup" className="text-white data-[state=active]:bg-orange-600">Sign Up</TabsTrigger>
+              <TabsTrigger value="login" className="text-white data-[state=active]:bg-orange-600">Login</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="signup" className="space-y-4 mt-4">
+              <AuthForm mode="signup" onSubmit={handleAuth} />
+            </TabsContent>
+
+            <TabsContent value="login" className="space-y-4 mt-4">
+              <AuthForm mode="login" onSubmit={handleAuth} />
+            </TabsContent>
+          </Tabs>
+
+          <div className="text-center mt-4">
+            <Button
+              variant="ghost"
+              onClick={() => setShowAuth(false)}
+              className="text-gray-400 hover:text-white"
+            >
+              ← Back to Welcome
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
+  );
+};
+
+const AuthForm = ({ mode, onSubmit }: { mode: "login" | "signup"; onSubmit: (email: string, password: string) => void }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (mode === "signup" && password !== confirmPassword) {
+      alert("Passwords don't match!");
+      return;
+    }
+    onSubmit(email, password);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <Label htmlFor="email" className="text-white">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white"
+          required
+        />
+      </div>
+      
+      <div>
+        <Label htmlFor="password" className="text-white">Password</Label>
+        <Input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white"
+          required
+        />
+      </div>
+
+      {mode === "signup" && (
+        <div>
+          <Label htmlFor="confirmPassword" className="text-white">Confirm Password</Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="bg-gray-700 border-gray-600 text-white"
+            required
+          />
+        </div>
+      )}
+
+      <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white">
+        {mode === "signup" ? "Create Account" : "Sign In"}
+      </Button>
+    </form>
   );
 };
 
