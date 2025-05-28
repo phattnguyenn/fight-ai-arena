@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +13,7 @@ import Notifications from "@/components/Notifications";
 
 const MainApp = () => {
   const [activeTab, setActiveTab] = useState("home");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userProfile, setUserProfile] = useState({
     username: "",
     displayName: "",
@@ -158,89 +157,48 @@ const MainApp = () => {
   }
 
   const menuItems = [
-    { id: "home", label: "Home" },
-    { id: "create", label: "Create" },
-    { id: "analyze", label: "Analyze" },
-    { id: "matchup", label: "Match Up" },
-    { id: "notifications", label: "Notifications" },
-    { id: "profile", label: "Profile" },
+    { id: "home", label: "Home", icon: "🏠" },
+    { id: "create", label: "Create", icon: "➕" },
+    { id: "analyze", label: "Analyze", icon: "🎯" },
+    { id: "matchup", label: "Match Up", icon: "⚔️" },
+    { id: "notifications", label: "Notifications", icon: "🔔" },
+    { id: "profile", label: "Profile", icon: "👤" },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex">
-      {/* Fixed Vertical Sidebar */}
-      <div className={`fixed top-0 left-0 h-full z-50 ${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-gradient-to-b from-black via-orange-900/20 to-red-900/20 backdrop-blur-sm border-r border-orange-500/20 flex flex-col`}>
-        {/* Header */}
-        <div className="p-4 border-b border-orange-500/20">
-          <div className="flex items-center justify-between">
-            {sidebarOpen && (
-              <h1 className="text-xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 bg-clip-text text-transparent">
-                FIGHT<span className="text-white">CLUB</span>
-              </h1>
-            )}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="text-white hover:bg-orange-500/20"
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex flex-col">
+      {/* Main Content */}
+      <div className="flex-1 overflow-y-auto p-4">
+        {activeTab === "home" && <HomeFeed />}
+        {activeTab === "create" && <CreatePost />}
+        {activeTab === "analyze" && <AIAnalyze onEloIncrease={handleEloIncrease} userElo={userProfile.eloPoints} />}
+        {activeTab === "matchup" && <MatchUpAndEvents />}
+        {activeTab === "notifications" && <Notifications />}
+        {activeTab === "profile" && <UserProfile profile={userProfile} onLogout={handleLogout} />}
+      </div>
+
+      {/* Bottom Navigation Bar for Mobile */}
+      <div className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-lg border-t border-orange-500/20 px-2 py-1">
+        <div className="flex justify-around items-center">
+          {menuItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`flex flex-col items-center p-2 rounded-lg transition-all ${
+                activeTab === item.id 
+                  ? 'text-orange-500 scale-110' 
+                  : 'text-gray-400'
+              }`}
             >
-              {sidebarOpen ? "◀" : "▶"}
-            </Button>
-          </div>
-        </div>
-
-        {/* User Info */}
-        <div className="p-4 border-b border-orange-500/20">
-          <div className="flex items-center space-x-3">
-            <Avatar className="w-10 h-10 ring-2 ring-orange-500/50">
-              <AvatarImage src={userProfile.avatar} />
-              <AvatarFallback className="bg-gradient-to-br from-orange-600 to-red-600 text-white">
-                {userProfile.displayName.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
-            {sidebarOpen && (
-              <div className="flex-1 min-w-0">
-                <p className="text-white font-medium truncate">{userProfile.displayName}</p>
-                <Badge className="bg-gradient-to-r from-orange-600 to-red-600 text-white border-none text-xs">
-                  {userProfile.rank}
-                </Badge>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Navigation Menu */}
-        <div className="flex-1 p-4">
-          <nav className="space-y-2">
-            {menuItems.map((item) => (
-              <Button
-                key={item.id}
-                variant="ghost"
-                onClick={() => setActiveTab(item.id)}
-                className={`w-full ${sidebarOpen ? 'justify-start' : 'justify-center'} ${
-                  activeTab === item.id
-                    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white'
-                    : 'text-gray-300 hover:bg-orange-500/20 hover:text-white'
-                } transition-all`}
-              >
-                {sidebarOpen && <span className="ml-3">{item.label}</span>}
-              </Button>
-            ))}
-          </nav>
+              <span className="text-xl mb-1">{item.icon}</span>
+              <span className="text-xs">{item.label}</span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Main Content with margin for sidebar */}
-      <div className={`flex-1 ${sidebarOpen ? 'ml-64' : 'ml-16'} transition-all duration-300`}>
-        <div className="h-full overflow-y-auto p-6">
-          {activeTab === "home" && <HomeFeed />}
-          {activeTab === "create" && <CreatePost />}
-          {activeTab === "analyze" && <AIAnalyze onEloIncrease={handleEloIncrease} userElo={userProfile.eloPoints} />}
-          {activeTab === "matchup" && <MatchUpAndEvents />}
-          {activeTab === "notifications" && <Notifications />}
-          {activeTab === "profile" && <UserProfile profile={userProfile} onLogout={handleLogout} />}
-        </div>
-      </div>
+      {/* Bottom Padding to Account for Navigation Bar */}
+      <div className="h-20"></div>
     </div>
   );
 };
