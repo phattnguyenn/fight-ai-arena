@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import HomeFeed from "@/components/HomeFeed";
 import ProfileSetup from "@/components/ProfileSetup";
 import CreatePost from "@/components/CreatePost";
-import MatchUpAndEvents from "@/components/MatchUpAndEvents";
+import MatchmakingApp from "@/components/MatchmakingApp";
 import UserProfile from "@/components/UserProfile";
 import AIAnalyze from "@/components/AIAnalyze";
 import Notifications from "@/components/Notifications";
@@ -172,7 +173,7 @@ const MainApp = () => {
         {activeTab === "home" && <HomeFeed />}
         {activeTab === "create" && <CreatePost />}
         {activeTab === "analyze" && <AIAnalyze onEloIncrease={handleEloIncrease} userElo={userProfile.eloPoints} />}
-        {activeTab === "matchup" && <MatchUpAndEvents />}
+        {activeTab === "matchup" && <MatchmakingApp />}
         {activeTab === "notifications" && <Notifications />}
         {activeTab === "profile" && <UserProfile profile={userProfile} onLogout={handleLogout} />}
       </div>
