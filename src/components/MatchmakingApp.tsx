@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -76,7 +75,7 @@ const MatchmakingApp = ({ isAuthenticated = false, onAuthRequired }: Matchmaking
       id: 1,
       name: "Marcus Rodriguez",
       username: "boxing_beast",
-      avatar: "",
+      avatar: "/lovable-uploads/ba675398-bfb1-409c-8318-bba2efd7bef8.png",
       elo: 1450,
       rank: "Silver II",
       location: "Los Angeles, CA",
@@ -97,7 +96,7 @@ const MatchmakingApp = ({ isAuthenticated = false, onAuthRequired }: Matchmaking
       id: 2,
       name: "Sarah Chen",
       username: "muay_thai_queen",
-      avatar: "",
+      avatar: "/lovable-uploads/7f2979c2-84d3-4f21-8f48-dbc366d81a02.png",
       elo: 1520,
       rank: "Gold I",
       location: "San Diego, CA",
@@ -118,7 +117,7 @@ const MatchmakingApp = ({ isAuthenticated = false, onAuthRequired }: Matchmaking
       id: 3,
       name: "Jake Thompson",
       username: "iron_fist",
-      avatar: "",
+      avatar: "/lovable-uploads/f91a95e9-94db-4bbe-860a-982c5befc2cf.png",
       elo: 1380,
       rank: "Silver I",
       location: "Long Beach, CA",
@@ -139,7 +138,7 @@ const MatchmakingApp = ({ isAuthenticated = false, onAuthRequired }: Matchmaking
       id: 4,
       name: "Diana Silva",
       username: "bjj_warrior",
-      avatar: "",
+      avatar: "/lovable-uploads/17fcef92-2d4e-4c81-bd3c-13fc6526e0b1.png",
       elo: 1605,
       rank: "Gold II",
       location: "Santa Monica, CA",
@@ -172,7 +171,7 @@ const MatchmakingApp = ({ isAuthenticated = false, onAuthRequired }: Matchmaking
       maxParticipants: 32,
       currentParticipants: 28,
       organizer: "LA Boxing Federation",
-      image: "/lovable-uploads/60d42b2f-2916-449c-a7e9-cc5ce66ae476.png",
+      image: "/lovable-uploads/f1d989db-e807-4024-ad17-9b38fff5cbdc.png",
       prizes: "1st: $2,500, 2nd: $1,000, 3rd: $500",
       requirements: "Must have amateur boxing license"
     },
@@ -189,7 +188,7 @@ const MatchmakingApp = ({ isAuthenticated = false, onAuthRequired }: Matchmaking
       maxParticipants: 16,
       currentParticipants: 14,
       organizer: "Nevada Boxing Commission",
-      image: "/lovable-uploads/60d42b2f-2916-449c-a7e9-cc5ce66ae476.png",
+      image: "/lovable-uploads/b7171366-886f-4888-a153-d6c1b9cd4ccf.png",
       prizes: "Winner: $25,000, Runner-up: $10,000",
       requirements: "Professional boxing license required"
     },
@@ -206,7 +205,7 @@ const MatchmakingApp = ({ isAuthenticated = false, onAuthRequired }: Matchmaking
       maxParticipants: 24,
       currentParticipants: 18,
       organizer: "SoCal Youth Boxing",
-      image: "/lovable-uploads/60d42b2f-2916-449c-a7e9-cc5ce66ae476.png",
+      image: "/lovable-uploads/41a31d3f-456c-4402-ade9-9e11144526d8.png",
       prizes: "Trophies and medals for all participants",
       requirements: "Age 16-21, amateur status"
     }
@@ -302,7 +301,7 @@ const MatchmakingApp = ({ isAuthenticated = false, onAuthRequired }: Matchmaking
       <div 
         className="min-h-[80vh] flex items-center justify-center relative"
         style={{
-          backgroundImage: `url('/lovable-uploads/60d42b2f-2916-449c-a7e9-cc5ce66ae476.png')`,
+          backgroundImage: `url('/lovable-uploads/f01f5205-08e4-4648-bd09-6c17ef7ac79b.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'

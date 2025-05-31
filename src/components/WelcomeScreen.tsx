@@ -64,29 +64,38 @@ const WelcomeScreen = ({ onGetStarted, onShowMatchmaking }: WelcomeScreenProps) 
           <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
             <div 
               onClick={handleFeatureClick}
-              className="bg-black/60 backdrop-blur-sm border border-orange-500/30 rounded-lg p-6 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
+              className="bg-black/60 backdrop-blur-sm border border-orange-500/30 rounded-lg p-4 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
             >
-              <div className="text-orange-500 text-4xl mb-4">🥊</div>
-              <h3 className="text-xl font-semibold text-white mb-2">AI Analysis</h3>
-              <p className="text-gray-400">Get AI-powered insights on your technique, power, and defense</p>
+              <div className="text-orange-500 text-3xl mb-3">🥊</div>
+              <h3 className="text-lg font-semibold text-white mb-2">AI Analysis</h3>
+              <p className="text-gray-400 text-sm">Get AI-powered insights on your technique, power, and defense</p>
             </div>
             
             <div 
               onClick={onShowMatchmaking}
-              className="bg-black/60 backdrop-blur-sm border border-red-500/30 rounded-lg p-6 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
+              className="relative bg-black/60 backdrop-blur-sm border border-red-500/30 rounded-lg p-8 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105 shadow-2xl"
+              style={{
+                background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(249, 115, 22, 0.1) 50%, rgba(239, 68, 68, 0.1) 100%)',
+                boxShadow: '0 0 30px rgba(239, 68, 68, 0.3), inset 0 0 30px rgba(249, 115, 22, 0.1)',
+                animation: 'pulse 2s infinite'
+              }}
             >
-              <div className="text-red-500 text-4xl mb-4">⚔️</div>
-              <h3 className="text-xl font-semibold text-white mb-2">Find Sparring Partners</h3>
-              <p className="text-gray-400">Connect with fighters nearby for training and sparring sessions</p>
+              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-500/20 to-orange-500/20 blur-sm"></div>
+              <div className="relative z-10">
+                <div className="text-red-500 text-5xl mb-4">⚔️</div>
+                <h3 className="text-2xl font-bold text-white mb-3">Find Sparring Partners</h3>
+                <p className="text-gray-300 text-base mb-4">Connect with fighters nearby for training and sparring sessions</p>
+                <div className="text-orange-400 font-bold text-lg animate-pulse">Best Feature</div>
+              </div>
             </div>
             
             <div 
               onClick={handleFeatureClick}
-              className="bg-black/60 backdrop-blur-sm border border-blue-500/30 rounded-lg p-6 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
+              className="bg-black/60 backdrop-blur-sm border border-blue-500/30 rounded-lg p-4 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
             >
-              <div className="text-blue-500 text-4xl mb-4">🏆</div>
-              <h3 className="text-xl font-semibold text-white mb-2">ELO Ranking</h3>
-              <p className="text-gray-400">Track your progress with our skill-based ranking system</p>
+              <div className="text-blue-500 text-3xl mb-3">🏆</div>
+              <h3 className="text-lg font-semibold text-white mb-2">ELO Ranking</h3>
+              <p className="text-gray-400 text-sm">Track your progress with our skill-based ranking system</p>
             </div>
           </div>
 
