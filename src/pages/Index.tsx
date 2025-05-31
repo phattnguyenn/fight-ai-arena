@@ -7,24 +7,57 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WelcomeScreen from "@/components/WelcomeScreen";
 import MainApp from "@/components/MainApp";
+import MatchmakingApp from "@/components/MatchmakingApp";
 
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [showMatchmaking, setShowMatchmaking] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "signup">("signup");
 
   const handleAuth = (email: string, password: string) => {
     // Simulate authentication
     console.log("Authenticating user:", email);
     setIsAuthenticated(true);
+    setShowAuth(false);
+    setShowMatchmaking(false);
+  };
+
+  const handleShowAuth = () => {
+    setShowAuth(true);
+    setShowMatchmaking(false);
+  };
+
+  const handleShowMatchmaking = () => {
+    setShowMatchmaking(true);
+    setShowAuth(false);
   };
 
   if (isAuthenticated) {
-    return <MainApp />;
+    return <MainApp onShowAuth={handleShowAuth} />;
+  }
+
+  if (showMatchmaking) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+        <div className="p-4">
+          <div className="mb-4">
+            <Button
+              onClick={() => setShowMatchmaking(false)}
+              variant="outline"
+              className="border-gray-600 text-gray-300 hover:bg-gray-700"
+            >
+              ← Back to Welcome
+            </Button>
+          </div>
+          <MatchmakingApp isAuthenticated={false} onAuthRequired={handleShowAuth} />
+        </div>
+      </div>
+    );
   }
 
   if (!showAuth) {
-    return <WelcomeScreen onGetStarted={() => setShowAuth(true)} />;
+    return <WelcomeScreen onGetStarted={() => setShowAuth(true)} onShowMatchmaking={handleShowMatchmaking} />;
   }
 
   return (
@@ -33,7 +66,7 @@ const Index = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/lovable-uploads/9b04fadf-c2c3-46e1-865a-49524a73ae37.png')`,
+          backgroundImage: `url('/lovable-uploads/60d42b2f-2916-449c-a7e9-cc5ce66ae476.png')`,
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80"></div>

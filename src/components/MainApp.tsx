@@ -12,7 +12,11 @@ import UserProfile from "@/components/UserProfile";
 import AIAnalyze from "@/components/AIAnalyze";
 import Notifications from "@/components/Notifications";
 
-const MainApp = () => {
+interface MainAppProps {
+  onShowAuth?: () => void;
+}
+
+const MainApp = ({ onShowAuth }: MainAppProps) => {
   const [activeTab, setActiveTab] = useState("home");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userProfile, setUserProfile] = useState({
@@ -173,7 +177,7 @@ const MainApp = () => {
         {activeTab === "home" && <HomeFeed />}
         {activeTab === "create" && <CreatePost />}
         {activeTab === "analyze" && <AIAnalyze onEloIncrease={handleEloIncrease} userElo={userProfile.eloPoints} />}
-        {activeTab === "matchup" && <MatchmakingApp />}
+        {activeTab === "matchup" && <MatchmakingApp isAuthenticated={true} onAuthRequired={onShowAuth} />}
         {activeTab === "notifications" && <Notifications />}
         {activeTab === "profile" && <UserProfile profile={userProfile} onLogout={handleLogout} />}
       </div>

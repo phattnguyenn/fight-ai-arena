@@ -1,12 +1,14 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 
 interface WelcomeScreenProps {
   onGetStarted: () => void;
+  onShowMatchmaking?: () => void;
 }
 
-const WelcomeScreen = ({ onGetStarted }: WelcomeScreenProps) => {
+const WelcomeScreen = ({ onGetStarted, onShowMatchmaking }: WelcomeScreenProps) => {
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
 
   const handleFeatureClick = () => {
@@ -70,7 +72,7 @@ const WelcomeScreen = ({ onGetStarted }: WelcomeScreenProps) => {
             </div>
             
             <div 
-              onClick={handleFeatureClick}
+              onClick={onShowMatchmaking}
               className="bg-black/60 backdrop-blur-sm border border-red-500/30 rounded-lg p-6 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
             >
               <div className="text-red-500 text-4xl mb-4">⚔️</div>
