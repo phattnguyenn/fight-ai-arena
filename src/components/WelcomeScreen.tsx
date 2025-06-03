@@ -9,8 +9,6 @@ interface WelcomeScreenProps {
 }
 
 const WelcomeScreen = ({ onGetStarted, onShowMatchmaking }: WelcomeScreenProps) => {
-  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
-
   const handleFeatureClick = () => {
     toast({
       title: "Sign Up Required",
@@ -18,96 +16,78 @@ const WelcomeScreen = ({ onGetStarted, onShowMatchmaking }: WelcomeScreenProps) 
       action: (
         <Button 
           onClick={onGetStarted}
-          className="bg-orange-600 hover:bg-orange-700 text-white"
+          className="bg-red-500 hover:bg-red-600 text-white"
         >
-          Sign Up Now
+          Sign Up
         </Button>
       ),
     });
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen bg-black relative overflow-hidden">
       {/* Background Image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
         style={{
           backgroundImage: `url('/lovable-uploads/42b99462-dada-44a5-ae2e-43358e217175.png')`,
         }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80"></div>
-      </div>
+      />
 
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-10 w-32 h-32 border-2 border-orange-500 rounded-full"></div>
-          <div className="absolute bottom-32 right-20 w-24 h-24 border-2 border-red-500 rounded-full"></div>
-          <div className="absolute top-1/3 right-1/4 w-16 h-16 border-2 border-orange-400 rotate-45"></div>
-        </div>
-
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
         <div className="text-center z-10 max-w-4xl mx-auto">
           {/* Hero Section */}
-          <div className="mb-8">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight">
+          <div className="mb-12">
+            <h1 className="text-6xl md:text-8xl font-thin text-white mb-6 tracking-widest">
               FIGHT
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
-                CLUB
-              </span>
+              <span className="text-red-500 block">CLUB</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-6 max-w-2xl mx-auto leading-relaxed">
-              The ultimate social platform for martial artists. Train smarter, connect deeper, fight stronger.
+            <div className="w-24 h-0.5 bg-blue-500 mx-auto mb-8"></div>
+            <p className="text-xl text-white font-light max-w-2xl mx-auto leading-relaxed">
+              The ultimate platform for martial artists
             </p>
           </div>
 
           {/* Features Grid */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">
             <div 
               onClick={handleFeatureClick}
-              className="bg-black/60 backdrop-blur-sm border border-orange-500/30 rounded-lg p-4 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
+              className="bg-black border border-blue-500 p-8 hover:border-red-500 transition-all cursor-pointer group"
             >
-              <div className="text-orange-500 text-3xl mb-3">🥊</div>
-              <h3 className="text-lg font-semibold text-white mb-2">AI Analysis</h3>
-              <p className="text-gray-400 text-sm">Get AI-powered insights on your technique, power, and defense</p>
+              <div className="text-blue-500 text-4xl mb-4 group-hover:text-red-500 transition-colors">■</div>
+              <h3 className="text-lg font-light text-white mb-3">AI ANALYSIS</h3>
+              <p className="text-white/70 text-sm font-light">Technique insights</p>
             </div>
             
             <div 
               onClick={onShowMatchmaking}
-              className="relative bg-black/60 backdrop-blur-sm border border-red-500/30 rounded-lg p-8 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105 shadow-2xl"
-              style={{
-                background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(249, 115, 22, 0.1) 50%, rgba(239, 68, 68, 0.1) 100%)',
-                boxShadow: '0 0 30px rgba(239, 68, 68, 0.3), inset 0 0 30px rgba(249, 115, 22, 0.1)',
-                animation: 'pulse 2s infinite'
-              }}
+              className="relative bg-black border-2 border-red-500 p-12 hover:bg-red-500/10 transition-all cursor-pointer shadow-2xl"
             >
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-500/20 to-orange-500/20 blur-sm"></div>
-              <div className="relative z-10">
-                <div className="text-red-500 text-5xl mb-4">⚔️</div>
-                <h3 className="text-2xl font-bold text-white mb-3">Find Sparring Partners</h3>
-                <p className="text-gray-300 text-base mb-4">Connect with fighters nearby for training and sparring sessions</p>
-                <div className="text-orange-400 font-bold text-lg animate-pulse">Best Feature</div>
-              </div>
+              <div className="text-red-500 text-6xl mb-6">■</div>
+              <h3 className="text-2xl font-light text-white mb-4">FIND SPARRING</h3>
+              <p className="text-white/80 text-base font-light mb-6">Connect with fighters</p>
+              <div className="text-blue-500 font-light text-lg">BEST FEATURE</div>
             </div>
             
             <div 
               onClick={handleFeatureClick}
-              className="bg-black/60 backdrop-blur-sm border border-blue-500/30 rounded-lg p-4 hover:bg-black/70 transition-all cursor-pointer transform hover:scale-105"
+              className="bg-black border border-blue-500 p-8 hover:border-red-500 transition-all cursor-pointer group"
             >
-              <div className="text-blue-500 text-3xl mb-3">🏆</div>
-              <h3 className="text-lg font-semibold text-white mb-2">ELO Ranking</h3>
-              <p className="text-gray-400 text-sm">Track your progress with our skill-based ranking system</p>
+              <div className="text-blue-500 text-4xl mb-4 group-hover:text-red-500 transition-colors">■</div>
+              <h3 className="text-lg font-light text-white mb-3">ELO RANKING</h3>
+              <p className="text-white/70 text-sm font-light">Skill tracking</p>
             </div>
           </div>
 
           {/* Call to Action */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             <Button 
               onClick={onGetStarted}
-              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-semibold px-8 py-3 text-lg rounded-full transition-all transform hover:scale-105"
+              className="bg-red-500 hover:bg-red-600 text-white font-light px-12 py-4 text-lg"
             >
-              Start Your Journey
+              START
             </Button>
-            <p className="text-gray-400 text-sm">Join thousands of martial artists worldwide</p>
+            <div className="w-12 h-0.5 bg-blue-500 mx-auto"></div>
           </div>
         </div>
       </div>

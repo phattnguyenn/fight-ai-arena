@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -162,16 +161,16 @@ const MainApp = ({ onShowAuth }: MainAppProps) => {
   }
 
   const menuItems = [
-    { id: "home", label: "Home", icon: "🏠" },
-    { id: "create", label: "Create", icon: "➕" },
-    { id: "analyze", label: "Analyze", icon: "🎯" },
-    { id: "matchup", label: "Match Up", icon: "⚔️" },
-    { id: "notifications", label: "Notifications", icon: "🔔" },
-    { id: "profile", label: "Profile", icon: "👤" },
+    { id: "home", label: "HOME", icon: "■" },
+    { id: "create", label: "CREATE", icon: "■" },
+    { id: "analyze", label: "ANALYZE", icon: "■" },
+    { id: "matchup", label: "MATCH UP", icon: "■" },
+    { id: "notifications", label: "ALERTS", icon: "■" },
+    { id: "profile", label: "PROFILE", icon: "■" },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex flex-col">
+    <div className="min-h-screen bg-black flex flex-col">
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto p-4">
         {activeTab === "home" && <HomeFeed />}
@@ -182,27 +181,27 @@ const MainApp = ({ onShowAuth }: MainAppProps) => {
         {activeTab === "profile" && <UserProfile profile={userProfile} onLogout={handleLogout} />}
       </div>
 
-      {/* Bottom Navigation Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-lg border-t border-orange-500/20 px-2 py-1">
+      {/* Bottom Navigation Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-blue-500 px-2 py-1">
         <div className="flex justify-around items-center">
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`flex flex-col items-center p-2 rounded-lg transition-all ${
+              className={`flex flex-col items-center p-3 transition-all ${
                 activeTab === item.id 
-                  ? 'text-orange-500 scale-110' 
-                  : 'text-gray-400'
+                  ? 'text-red-500' 
+                  : 'text-blue-500 hover:text-white'
               }`}
             >
-              <span className="text-xl mb-1">{item.icon}</span>
-              <span className="text-xs">{item.label}</span>
+              <span className="text-lg mb-1">{item.icon}</span>
+              <span className="text-xs font-light">{item.label}</span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Bottom Padding to Account for Navigation Bar */}
+      {/* Bottom Padding */}
       <div className="h-20"></div>
     </div>
   );
