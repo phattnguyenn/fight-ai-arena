@@ -82,8 +82,18 @@ const Index = () => {
 
             <Tabs value={authMode} onValueChange={(value) => setAuthMode(value as "login" | "signup")}>
               <TabsList className="grid w-full grid-cols-2 bg-gray-700">
-                <TabsTrigger value="signup" className="text-white data-[state=active]:bg-orange-600">Sign Up</TabsTrigger>
-                <TabsTrigger value="login" className="text-white data-[state=active]:bg-orange-600">Login</TabsTrigger>
+                <TabsTrigger 
+                  value="signup" 
+                  className="text-white data-[state=active]:bg-orange-600"
+                >
+                  Sign Up
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="login" 
+                  className="text-white data-[state=active]:bg-orange-600"
+                >
+                  Login
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="signup" className="space-y-4 mt-4">
