@@ -1,208 +1,80 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import HomeFeed from "@/components/HomeFeed";
-import ProfileSetup from "@/components/ProfileSetup";
-import CreatePost from "@/components/CreatePost";
-import MatchmakingApp from "@/components/MatchmakingApp";
-import UserProfile from "@/components/UserProfile";
-import AIAnalyze from "@/components/AIAnalyze";
-import Notifications from "@/components/Notifications";
+import FindSpar from "@/components/FindSpar";
+import Events from "@/components/Events";
+import Analyze from "@/components/Analyze";
+import Profile from "@/components/Profile";
 
 interface MainAppProps {
-  onShowAuth?: () => void;
+  userRole: "fighter" | "coach" | "fan";
+  onLogout: () => void;
 }
 
-const MainApp = ({ onShowAuth }: MainAppProps) => {
+const MainApp = ({ userRole, onLogout }: MainAppProps) => {
   const [activeTab, setActiveTab] = useState("home");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userProfile, setUserProfile] = useState({
-    username: "",
-    displayName: "",
-    bio: "",
-    martialArts: [],
-    avatar: "",
-    rank: "Bronze I",
-    eloPoints: 1200,
-    posts: 24,
-    followers: 156,
-    following: 89,
-    subscribers: 100,
-    isCreator: true,
-    wins: 12,
-    losses: 3,
-    draws: 1,
-    totalFights: 16,
-    winRate: 75,
-    avgPerformance: 82,
-    profileImages: [
-      "/lovable-uploads/70f89bc1-fad9-4a7c-9373-6275256cd8b8.png",
-      "/lovable-uploads/449a86e6-a6a3-4ead-aa65-72378005773c.png",
-      "/lovable-uploads/f0ea7ce1-8701-4f54-be86-df087cb69b67.png",
-      "/lovable-uploads/c96b90b9-9167-42be-965e-b40348944f1c.png",
-      "/lovable-uploads/ae9b405c-35e9-4c78-b66e-48359e3748d7.png",
-      "/lovable-uploads/617d9ba0-8592-426a-b3e5-2958df7d67b0.png"
-    ],
-    matchHistory: [
-      {
-        id: 1,
-        opponent: "Jake Martinez",
-        result: "Win",
-        method: "TKO",
-        round: 3,
-        date: "2024-03-15",
-        event: "Fight Night 42"
-      },
-      {
-        id: 2,
-        opponent: "Alex Thompson",
-        result: "Loss",
-        method: "Decision",
-        round: 5,
-        date: "2024-02-20",
-        event: "Championship Series"
-      },
-      {
-        id: 3,
-        opponent: "Mike Chen",
-        result: "Win",
-        method: "Submission",
-        round: 2,
-        date: "2024-01-10",
-        event: "Underground Battle"
-      }
-    ]
-  });
 
-  const [hasCompletedSetup, setHasCompletedSetup] = useState(false);
-
-  const handleLogout = () => {
-    setHasCompletedSetup(false);
-    setUserProfile({
-      username: "",
-      displayName: "",
-      bio: "",
-      martialArts: [],
-      avatar: "",
-      rank: "Bronze I",
-      eloPoints: 1200,
-      posts: 0,
-      followers: 0,
-      following: 0,
-      subscribers: 0,
-      isCreator: false,
-      wins: 0,
-      losses: 0,
-      draws: 0,
-      totalFights: 0,
-      winRate: 0,
-      avgPerformance: 0,
-      profileImages: [],
-      matchHistory: []
-    });
-  };
-
-  const handleEloIncrease = (points: number) => {
-    setUserProfile(prev => ({
-      ...prev,
-      eloPoints: prev.eloPoints + points
-    }));
-  };
-
-  if (!hasCompletedSetup) {
-    return (
-      <ProfileSetup 
-        onComplete={(profile) => {
-          setUserProfile({
-            ...profile, 
-            wins: 12, 
-            losses: 3, 
-            draws: 1, 
-            totalFights: 16, 
-            winRate: 75, 
-            avgPerformance: 82,
-            subscribers: 100,
-            isCreator: true,
-            profileImages: [
-              "/lovable-uploads/70f89bc1-fad9-4a7c-9373-6275256cd8b8.png",
-              "/lovable-uploads/449a86e6-a6a3-4ead-aa65-72378005773c.png",
-              "/lovable-uploads/f0ea7ce1-8701-4f54-be86-df087cb69b67.png",
-              "/lovable-uploads/c96b90b9-9167-42be-965e-b40348944f1c.png",
-              "/lovable-uploads/ae9b405c-35e9-4c78-b66e-48359e3748d7.png",
-              "/lovable-uploads/617d9ba0-8592-426a-b3e5-2958df7d67b0.png"
-            ],
-            matchHistory: [
-              {
-                id: 1,
-                opponent: "Jake Martinez",
-                result: "Win",
-                method: "TKO",
-                round: 3,
-                date: "2024-03-15",
-                event: "Fight Night 42"
-              },
-              {
-                id: 2,
-                opponent: "Alex Thompson",
-                result: "Loss",
-                method: "Decision",
-                round: 5,
-                date: "2024-02-20",
-                event: "Championship Series"
-              }
-            ]
-          });
-          setHasCompletedSetup(true);
-        }} 
-      />
-    );
-  }
-
-  const menuItems = [
-    { id: "home", label: "HOME", icon: "■" },
-    { id: "create", label: "CREATE", icon: "■" },
-    { id: "analyze", label: "ANALYZE", icon: "■" },
-    { id: "matchup", label: "MATCH UP", icon: "■" },
-    { id: "notifications", label: "ALERTS", icon: "■" },
-    { id: "profile", label: "PROFILE", icon: "■" },
+  const tabs = [
+    { id: "home", label: "HOME", icon: "🏠" },
+    { id: "spar", label: "FIND SPAR", icon: "👊" },
+    { id: "events", label: "EVENTS", icon: "📅" },
+    { id: "analyze", label: "ANALYZE", icon: "📊" },
+    { id: "profile", label: "PROFILE", icon: "👤" },
   ];
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
-      {/* Main Content */}
-      <div className="flex-1 overflow-y-auto p-4">
-        {activeTab === "home" && <HomeFeed />}
-        {activeTab === "create" && <CreatePost />}
-        {activeTab === "analyze" && <AIAnalyze onEloIncrease={handleEloIncrease} userElo={userProfile.eloPoints} />}
-        {activeTab === "matchup" && <MatchmakingApp isAuthenticated={true} onAuthRequired={onShowAuth} />}
-        {activeTab === "notifications" && <Notifications />}
-        {activeTab === "profile" && <UserProfile profile={userProfile} onLogout={handleLogout} />}
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#101010' }}>
+      {/* Global Header */}
+      <div 
+        className="h-14 flex items-center justify-between px-4 border-b"
+        style={{ backgroundColor: '#101010', borderColor: '#333333' }}
+      >
+        <div className="flex items-center space-x-3">
+          <div className="text-white font-bold text-lg">FIGHTCONNECT</div>
+        </div>
+        
+        <div className="flex items-center space-x-3">
+          <div 
+            className="w-8 h-8 rounded-full flex items-center justify-center text-xs text-white font-bold"
+            style={{ backgroundColor: '#E31837' }}
+          >
+            FC
+          </div>
+        </div>
       </div>
 
-      {/* Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-blue-500 px-2 py-1">
-        <div className="flex justify-around items-center">
-          {menuItems.map((item) => (
+      {/* Main Content */}
+      <div className="flex-1 overflow-y-auto">
+        {activeTab === "home" && <HomeFeed userRole={userRole} />}
+        {activeTab === "spar" && <FindSpar />}
+        {activeTab === "events" && <Events userRole={userRole} />}
+        {activeTab === "analyze" && <Analyze />}
+        {activeTab === "profile" && <Profile userRole={userRole} onLogout={onLogout} />}
+      </div>
+
+      {/* Bottom Tab Bar */}
+      <div 
+        className="h-16 border-t"
+        style={{ backgroundColor: '#101010', borderColor: '#333333' }}
+      >
+        <div className="flex justify-around items-center h-full px-2">
+          {tabs.map((tab) => (
             <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`flex flex-col items-center p-3 transition-all ${
-                activeTab === item.id 
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex flex-col items-center justify-center p-2 transition-all ${
+                activeTab === tab.id 
                   ? 'text-red-500' 
-                  : 'text-blue-500 hover:text-white'
+                  : 'text-gray-500 hover:text-white'
               }`}
             >
-              <span className="text-lg mb-1">{item.icon}</span>
-              <span className="text-xs font-light">{item.label}</span>
+              <span className="text-lg mb-1">{tab.icon}</span>
+              <span className="text-xs font-medium">{tab.label}</span>
             </button>
           ))}
         </div>
       </div>
-
-      {/* Bottom Padding */}
-      <div className="h-20"></div>
     </div>
   );
 };
