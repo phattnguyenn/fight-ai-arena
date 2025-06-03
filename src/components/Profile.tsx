@@ -62,6 +62,7 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
   ]);
 
   if (userRole === "fighter") {
+    const fighterUser = userData.fighter;
     return (
       <div className="p-4 space-y-6">
         {/* Profile Header */}
@@ -76,24 +77,24 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
           <div className="relative px-6 pb-6" style={{ backgroundColor: '#181818', marginTop: '-16px', borderRadius: '0 0 12px 12px' }}>
             <div className="flex items-end space-x-4">
               <Avatar className="w-24 h-24 border-4 border-white -mt-12">
-                <AvatarImage src={currentUser.avatarUrl} />
+                <AvatarImage src={fighterUser.avatarUrl} />
                 <AvatarFallback style={{ backgroundColor: '#E31837' }}>
-                  {currentUser.fullName.charAt(0)}
+                  {fighterUser.fullName.charAt(0)}
                 </AvatarFallback>
               </Avatar>
               
               <div className="flex-1 pt-4">
-                <h1 className="text-2xl font-bold text-white">{currentUser.fullName}</h1>
-                <p className="text-gray-400">"{currentUser.nickname}"</p>
+                <h1 className="text-2xl font-bold text-white">{fighterUser.fullName}</h1>
+                <p className="text-gray-400">"{fighterUser.nickname}"</p>
                 <div className="flex items-center space-x-2 mt-2">
                   <Badge 
                     className="text-white"
                     style={{ backgroundColor: '#1E90FF' }}
                   >
-                    {currentUser.elo} | {currentUser.tier}
+                    {fighterUser.elo} | {fighterUser.tier}
                   </Badge>
-                  <span className="text-gray-400 text-sm">{currentUser.weightClass}</span>
-                  <span className="text-gray-400 text-sm">• {currentUser.discipline}</span>
+                  <span className="text-gray-400 text-sm">{fighterUser.weightClass}</span>
+                  <span className="text-gray-400 text-sm">• {fighterUser.discipline}</span>
                 </div>
               </div>
               
@@ -118,17 +119,17 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
           <CardContent>
             <div className="grid grid-cols-3 gap-6 mb-4">
               <div className="text-center">
-                <div className="text-2xl font-bold" style={{ color: '#E31837' }}>{currentUser.stats.power}</div>
+                <div className="text-2xl font-bold" style={{ color: '#E31837' }}>{fighterUser.stats.power}</div>
                 <div className="text-gray-400 text-sm">Power</div>
                 <div className="text-green-400 text-xs">↑ +3</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold" style={{ color: '#1E90FF' }}>{currentUser.stats.defense}</div>
+                <div className="text-2xl font-bold" style={{ color: '#1E90FF' }}>{fighterUser.stats.defense}</div>
                 <div className="text-gray-400 text-sm">Defense</div>
                 <div className="text-gray-400 text-xs">± 0</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold" style={{ color: '#E31837' }}>{currentUser.stats.accuracy}%</div>
+                <div className="text-2xl font-bold" style={{ color: '#E31837' }}>{fighterUser.stats.accuracy}%</div>
                 <div className="text-gray-400 text-sm">Accuracy</div>
                 <div className="text-green-400 text-xs">↑ +2%</div>
               </div>
@@ -136,7 +137,7 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
             
             <div className="text-center pt-4 border-t border-gray-700">
               <div className="text-white font-semibold">Fight Record</div>
-              <div className="text-gray-400">{currentUser.record}</div>
+              <div className="text-gray-400">{fighterUser.record}</div>
             </div>
           </CardContent>
         </Card>
@@ -148,7 +149,7 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-3 gap-3">
-              {currentUser.profileImages.map((image, index) => (
+              {fighterUser.profileImages.map((image, index) => (
                 <div 
                   key={index}
                   className="aspect-square rounded-lg bg-cover bg-center relative"
@@ -215,6 +216,7 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
 
   // Coach Profile
   if (userRole === "coach") {
+    const coachUser = userData.coach;
     return (
       <div className="p-4 space-y-6">
         {/* Gym Header */}
@@ -222,16 +224,16 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
           <CardContent className="p-6">
             <div className="flex items-center space-x-4">
               <Avatar className="w-20 h-20">
-                <AvatarImage src={currentUser.avatarUrl} />
+                <AvatarImage src={coachUser.avatarUrl} />
                 <AvatarFallback style={{ backgroundColor: '#E31837' }}>
-                  {currentUser.gymName.charAt(0)}
+                  {coachUser.gymName.charAt(0)}
                 </AvatarFallback>
               </Avatar>
               
               <div className="flex-1">
                 <div className="flex items-center space-x-2">
-                  <h1 className="text-2xl font-bold text-white">{currentUser.gymName}</h1>
-                  {currentUser.verified && (
+                  <h1 className="text-2xl font-bold text-white">{coachUser.gymName}</h1>
+                  {coachUser.verified && (
                     <Badge 
                       className="text-white"
                       style={{ backgroundColor: '#1E90FF' }}
@@ -240,9 +242,9 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
                     </Badge>
                   )}
                 </div>
-                <p className="text-gray-400">{currentUser.address}</p>
+                <p className="text-gray-400">{coachUser.address}</p>
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {currentUser.disciplines.map((discipline) => (
+                  {coachUser.disciplines.map((discipline) => (
                     <Badge key={discipline} variant="outline" className="border-gray-600 text-gray-300">
                       {discipline}
                     </Badge>
@@ -278,11 +280,11 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
           <CardContent>
             <div className="grid grid-cols-3 gap-6">
               <div className="text-center">
-                <div className="text-2xl font-bold text-white">{currentUser.activeFighters}</div>
+                <div className="text-2xl font-bold text-white">{coachUser.activeFighters}</div>
                 <div className="text-gray-400 text-sm">Active Fighters</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-white">{currentUser.eventsHosted}</div>
+                <div className="text-2xl font-bold text-white">{coachUser.eventsHosted}</div>
                 <div className="text-gray-400 text-sm">Events Hosted</div>
               </div>
               <div className="text-center">
@@ -299,6 +301,7 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
   }
 
   // Fan Profile
+  const fanUser = userData.fan;
   return (
     <div className="p-4 space-y-6">
       {/* Fan Header */}
@@ -306,17 +309,17 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
         <CardContent className="p-6">
           <div className="flex items-center space-x-4">
             <Avatar className="w-20 h-20">
-              <AvatarImage src={currentUser.avatarUrl} />
+              <AvatarImage src={fanUser.avatarUrl} />
               <AvatarFallback style={{ backgroundColor: '#E31837' }}>
-                {currentUser.fullName.charAt(0)}
+                {fanUser.fullName.charAt(0)}
               </AvatarFallback>
             </Avatar>
             
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-white">{currentUser.fullName}</h1>
+              <h1 className="text-2xl font-bold text-white">{fanUser.fullName}</h1>
               <p className="text-gray-400">Fight Fan</p>
               <div className="flex flex-wrap gap-2 mt-2">
-                {currentUser.interests.map((interest) => (
+                {fanUser.interests.map((interest) => (
                   <Badge key={interest} variant="outline" className="border-gray-600 text-gray-300">
                     {interest}
                   </Badge>
@@ -335,11 +338,11 @@ const Profile = ({ userRole, onLogout }: ProfileProps) => {
         <CardContent>
           <div className="grid grid-cols-2 gap-6">
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">{currentUser.followedFighters}</div>
+              <div className="text-2xl font-bold text-white">{fanUser.followedFighters}</div>
               <div className="text-gray-400 text-sm">Followed Fighters</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">{currentUser.eventsAttended}</div>
+              <div className="text-2xl font-bold text-white">{fanUser.eventsAttended}</div>
               <div className="text-gray-400 text-sm">Events Attended</div>
             </div>
           </div>

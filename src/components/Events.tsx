@@ -79,15 +79,13 @@ const Events = ({ userRole }: EventsProps) => {
         <TabsList className="grid w-full grid-cols-2" style={{ backgroundColor: '#101010', borderColor: '#1E90FF' }}>
           <TabsTrigger 
             value="all" 
-            className="text-white data-[state=active]:text-white"
-            style={{ 'data-[state=active]:backgroundColor': '#E31837' }}
+            className="text-white data-[state=active]:text-white data-[state=active]:bg-red-600"
           >
             ALL EVENTS
           </TabsTrigger>
           <TabsTrigger 
             value="my" 
-            className="text-white data-[state=active]:text-white"
-            style={{ 'data-[state=active]:backgroundColor': '#1E90FF' }}
+            className="text-white data-[state=active]:text-white data-[state=active]:bg-blue-600"
           >
             MY EVENTS
           </TabsTrigger>
